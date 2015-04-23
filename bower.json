@@ -18,6 +18,6 @@
   "homepage": "https://github.com/PolymerElements/iron-test-helpers",
   "ignore": [],
   "dependencies": {
-    "polymer": "polymer/polymer#v0.8.0-rc.6"
+    "polymer": "polymer/polymer#v0.8.0-rc.7"
   }
 }
