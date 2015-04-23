@@ -17,10 +17,15 @@
     Polymer.Base.fire.call(target, 'mouseup');
   }
 
+  function tap(target) {
+    Polymer.Base.fire.call(target, 'tap');
+  }
+
   function downAndUp (target, callback) {
     down(target);
     Polymer.Base.async(function() {
       up(target);
+      tap(target);
 
       callback && callback();
     });
