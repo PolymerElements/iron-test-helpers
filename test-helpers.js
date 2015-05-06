@@ -1,7 +1,7 @@
 (function(global) {
 
   global.forceXIfStamp = function(node) {
-    var templates = Polymer.dom(node.root).querySelectorAll('template[is=x-if]');
+    var templates = Polymer.dom(node.root).querySelectorAll('template[is=dom-if]');
     for (var tmpl, i = 0; tmpl = templates[i]; i++) {
       tmpl.flushDebouncer('render');
     }
