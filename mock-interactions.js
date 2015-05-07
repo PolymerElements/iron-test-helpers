@@ -10,11 +10,11 @@
   }
 
   function down (target) {
-    Polymer.Base.fire.call(target, 'mousedown');
+    Polymer.Base.fire.call(target, 'mousedown', {clientX: 0, clientY: 0});
   }
 
   function up (target) {
-    Polymer.Base.fire.call(target, 'mouseup');
+    Polymer.Base.fire.call(target, 'mouseup', {clientX: 0, clientY: 0});
   }
 
   function tap(target) {
