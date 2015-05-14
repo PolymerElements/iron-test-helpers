@@ -118,7 +118,7 @@
       x: xy.x + dx,
       y: xy.y + dy
     };
-    move(target, xy, xy2);
+    move(target, xy, xy2, steps);
     up(target, xy2);
   }
 
@@ -168,6 +168,10 @@
     track: track,
     pressAndReleaseKeyOn: pressAndReleaseKeyOn,
     pressEnter: pressEnter,
-    pressSpace: pressSpace
+    pressSpace: pressSpace,
+    keyDownOn: keyDownOn,
+    keyUpOn: keyUpOn,
+    middleOfNode: middleOfNode,
+    topLeftOfNode: topLeftOfNode
   };
 })(this);
