@@ -109,8 +109,8 @@
   }
 
   function track(target, dx, dy, steps) {
-    moveX = moveX | 0;
-    moveY = moveY | 0;
+    dx = dx | 0;
+    dy = dy | 0;
     steps = steps || 5;
     down(target);
     var xy = middleOfNode(target);
