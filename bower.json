@@ -1,9 +1,10 @@
 {
   "name": "iron-test-helpers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "The Polymer Authors"
   ],
+  "description": "Utility classes to help make testing easier",
   "keywords": [
     "web-components",
     "web-component",
