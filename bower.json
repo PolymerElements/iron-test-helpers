@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git://github.com/PolymerElements/iron-test-helpers"
   },
-  "license": "MIT",
+  "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/PolymerElements/iron-test-helpers",
   "ignore": [],
   "dependencies": {
