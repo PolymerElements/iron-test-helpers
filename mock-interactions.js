@@ -144,7 +144,8 @@
 
   function keyboardEventFor(type, keyCode) {
     var event = new CustomEvent(type, {
-      bubbles: true
+      bubbles: true,
+      cancelable: true
     });
 
     event.keyCode = keyCode;
