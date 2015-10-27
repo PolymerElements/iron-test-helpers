@@ -24,5 +24,6 @@
   },
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
-  }
+  },
+  "main": "iron-test-helpers.html"
 }
