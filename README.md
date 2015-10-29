@@ -1,23 +1,13 @@
-# iron-test-helpers
 
-Utility classes to make testing easier.
+<!---
 
-## Mock Interactions
+This README is automatically generated from the comments in these files:
+iron-test-helpers.html
 
-This is a set of methods to simulate mouse or keyboard interaction with an element. Include `mock-interactions.js` and then use them like so:
+Edit those files, and our readme bot will duplicate them over here!
+Edit this file, and the bot will squash your changes :)
 
-```javascript
-test('can be triggered with space', function(done) {
-  button.addEventListener('keydown', function() {
-    done();
-  });
-  MockInteractions.pressSpace(button);
-});
+-->
 
-test('can be clicked', function(done) {
-  button.addEventListener('click', function() {
-    done();
-  });
-  MockInteractions.tap(button);
-});
-```
+_[Demo and API Docs](https://elements.polymer-project.org/elements/iron-test-helpers)_
+
