@@ -106,16 +106,21 @@
     makeEvent('tap', xy, node);
   }
 
-  function focus(target) {
-    Polymer.Base.fire.call(target, 'focus', {}, {
-      bubbles: false
+  function fireSimpleEvent(target, type, detail) {
+    var event = new Event(type, {
+      bubbles: false,
+      cancelable: false
     });
+    event.detail = detail || {};
+    target.dispatchEvent(event);
+  }
+
+  function focus(target) {
+    fireSimpleEvent(target, 'focus');
   }
 
   function blur(target) {
-    Polymer.Base.fire.call(target, 'blur', {}, {
-      bubbles: false
-    });
+    fireSimpleEvent(target, 'blur');
   }
 
   function downAndUp(target, callback) {
