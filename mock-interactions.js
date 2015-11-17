@@ -144,6 +144,11 @@
     up(target, xy2);
   }
 
+  function over(node, xy) {
+    xy = xy || middleOfNode(node);
+    makeEvent('over', xy, node);
+  }
+
   function keyboardEventFor(type, keyCode) {
     var event = new CustomEvent(type, {
       bubbles: true,
@@ -197,6 +202,7 @@
     keyDownOn: keyDownOn,
     keyUpOn: keyUpOn,
     middleOfNode: middleOfNode,
-    topLeftOfNode: topLeftOfNode
+    topLeftOfNode: topLeftOfNode,
+    over: over
   };
 })(this);
