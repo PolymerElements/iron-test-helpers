@@ -8,6 +8,7 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 (function(global) {
+  'use strict';
 
   global.flushAsynchronousOperations = function() {
     // force distribution
@@ -36,4 +37,23 @@
     node.dispatchEvent(event);
   };
 
+  global.skipUnless = function(condition, test) {
+    var isAsyncTest = !!test.length;
+
+    return function(done) {
+      var testCalledDone = false;
+
+      if (!condition()) {
+        return done();
+      }
+
+      var result = test.call(this, done);
+
+      if (!isAsyncTest) {
+        done();
+      }
+
+      return result;
+    };
+  };
 })(this);
