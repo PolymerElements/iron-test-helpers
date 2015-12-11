@@ -31,7 +31,7 @@
       bubbles: true,
       cancelable: true
     });
-    for (p in props) {
+    for (var p in props) {
       event[p] = props[p];
     }
     node.dispatchEvent(event);
