@@ -196,6 +196,7 @@
     pressSpace: pressSpace,
     keyDownOn: keyDownOn,
     keyUpOn: keyUpOn,
+    keyEventOn: keyEventOn,
     middleOfNode: middleOfNode,
     topLeftOfNode: topLeftOfNode
   };
