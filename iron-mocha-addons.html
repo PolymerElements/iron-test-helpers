@@ -1,0 +1,73 @@
+<script>
+  (function() {
+    'use strict';
+
+    function extendMochaContext(helperName, helperFactory) {
+      Object.keys(Mocha.interfaces).forEach(function(interfaceName) {
+        var originalInterface = Mocha.interfaces[interfaceName];
+        var teardownProperty = interfaceName === 'bdd' ? 'afterEach' : 'teardown';
+
+        Mocha.interfaces[interfaceName] = function(suite) {
+          originalInterface.apply(this, arguments);
+
+          suite.on('pre-require', function(context, file, mocha) {
+            if (!context[teardownProperty]) {
+              return;
+            }
+
+            context[helperName] = helperFactory(context[teardownProperty].bind(context));
+          });
+        };
+      });
+    }
+
+    extendMochaContext('stub', function(afterEach) {
+      return function stub(tagName, implementation) {
+        var proto = document.createElement(tagName).constructor.prototype;
+        var keys = Object.keys(implementation);
+
+        keys.forEach(function(key) {
+          sinon.stub(proto, key, implementation[key]);
+        });
+
+        afterEach(function() {
+          keys.forEach(function(key) {
+            proto[key].restore();
+          });
+        });
+      };
+    });
+
+    extendMochaContext('replace', function(afterEach) {
+      return function replace(oldTagName) {
+        return {
+          with: function(tagName) {
+            var originalInstanceTemplate = Polymer.Base.instanceTemplate;
+
+            sinon.stub(Polymer.Base, 'instanceTemplate', function(template) {
+              var dom = originalInstanceTemplate.apply(this, arguments);
+              var nodes = Array.prototype.slice.call(dom.querySelectorAll(oldTagName));
+
+              nodes.forEach(function(node) {
+                var replacement = document.createElement(tagName);
+
+                for (var index = 0; index < node.attributes.length; ++index) {
+                  replacement.setAttribute(
+                    node.attributes[index].name, node.attributes[index].value);
+                }
+
+                node.parentNode.replaceChild(replacement, node);
+              });
+
+              return dom;
+            });
+
+            afterEach(function() {
+              Polymer.Base.instanceTemplate.restore();
+            });
+          }
+        };
+      };
+    });
+  })();
+</script>
