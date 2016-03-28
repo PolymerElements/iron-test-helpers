@@ -11,6 +11,14 @@
 (function(global) {
   'use strict';
 
+  /**
+   * TODO(cdata): Remove this when one of the following things happens:
+   *  - Polymer stops using a UA string test in Gestures code.
+   *  - Polymer makes the UA string it uses to test public.
+   * Track Polymer/polymer#3538 for progress on this.
+   */
+  var IS_TOUCH_ONLY = navigator.userAgent.match(/iP(?:[oa]d|hone)|Android/);
+
   var HAS_NEW_MOUSE = (function() {
     var has = false;
     try {
@@ -43,6 +51,43 @@
       y: bcr.top,
       x: bcr.left
     };
+  }
+
+  function makeTouches(xyList, node) {
+    var id = 0;
+
+    return xyList.map(function(xy) {
+      var touchInit = {
+        identifier: id++,
+        target: node,
+        clientX: xy.x,
+        clientY: xy.y
+      };
+
+      return window.Touch ? new window.Touch(touchInit) : touchInit;
+    });
+  }
+
+  function makeSoloTouchEvent(type, xy, node) {
+    var xy = xy || middleOfNode(node);
+    var touches = makeTouches([xy], node);
+    var touchEventInit = {
+      touches: touches,
+      targetTouches: touches,
+      changedTouches: touches
+    };
+    var event;
+
+    if (window.TouchEvent) {
+      event = new TouchEvent(type, touchEventInit);
+    } else {
+      event = new CustomEvent(type, { bubbles: true, cancelable: true });
+      for (var property in touchEventInit) {
+        event[property] = touchEventInit[property];
+      }
+    }
+
+    node.dispatchEvent(event);
   }
 
   /*
@@ -145,8 +190,14 @@
    * @param {HTMLElement} node The node to fire the event on.
    * @param {Object} xy Optional. The (x,y) coordinates the mouse event should be fired from.
    */
-  function down(node, xy) {
+  function down(node, xy, options) {
     xy = xy || middleOfNode(node);
+    if (options && options.emulateTouch) {
+      makeSoloTouchEvent('touchstart', xy, node);
+      if (IS_TOUCH_ONLY) {
+        return;
+      }
+    }
     makeEvent('down', xy, node);
   }
 
@@ -158,8 +209,14 @@
    * @param {HTMLElement} node The node to fire the event on.
    * @param {Object} xy Optional. The (x,y) coordinates the mouse event should be fired from.
    */
-  function up(node, xy) {
+  function up(node, xy, options) {
     xy = xy || middleOfNode(node);
+    if (options && options.emulateTouch) {
+      makeSoloTouchEvent('touchend', xy, node);
+      if (IS_TOUCH_ONLY) {
+        return;
+      }
+    }
     makeEvent('up', xy, node);
   }
 
@@ -171,11 +228,10 @@
    * @param {HTMLElement} target The node to fire the event on.
    * @param {Object} callback Optional. The function to be called after the action ends.
    */
-  function downAndUp(target, callback) {
-    down(target);
+  function downAndUp(target, callback, options) {
+    down(target, null, options);
     Polymer.Base.async(function() {
-      up(target);
-      tap(target);
+      up(target, null, options);
 
       callback && callback();
     });
@@ -188,13 +244,14 @@
    * @param {HTMLElement} node The node to fire the event on.
    * @param {Object} xy Optional. The (x,y) coordinates the mouse event should be fired from.
    */
-  function tap(node) {
+  function tap(node, options) {
     // Respect nodes that are disabled in the UI.
     if (window.getComputedStyle(node)['pointer-events'] === 'none')
       return;
+
     var xy = middleOfNode(node);
-    down(node, xy);
-    up(node, xy);
+    down(node, xy, options);
+    up(node, xy, options);
     makeEvent('tap', xy, node);
   }
 
