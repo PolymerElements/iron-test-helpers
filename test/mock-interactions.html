@@ -36,13 +36,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         button = fixture('TrivialButton');
       });
 
+      teardown(function(done) {
+        // TODO(cdata): Remove when polymer/polymer#3540 is resolved
+        window.setTimeout(function() {
+          done();
+        }, 2500);
+      });
+
       suite('simulating tap', function() {
         test('only dispatches one tap event', function() {
           var tapSpy = sinon.spy();
           button.addEventListener('tap', tapSpy);
-          MockInteractions.tap(button, { emulateTouch: true });
+          MockInteractions.tap(button);
           button.removeEventListener('tap', tapSpy);
           expect(tapSpy.callCount).to.be.eql(1);
+        });
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function() {
+            var tapSpy = sinon.spy();
+            button.addEventListener('tap', tapSpy);
+            MockInteractions.tap(button, { emulateTouch: true });
+            button.removeEventListener('tap', tapSpy);
+            expect(tapSpy.callCount).to.be.eql(1);
+          });
         });
       });
 
@@ -54,9 +71,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             button.removeEventListener('tap', tapSpy);
             expect(tapSpy.callCount).to.be.eql(1);
             done();
-          }, { emulateTouch: true });
+          });
         });
-      })
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function(done) {
+            var tapSpy = sinon.spy();
+            button.addEventListener('tap', tapSpy);
+            MockInteractions.downAndUp(button, function() {
+              button.removeEventListener('tap', tapSpy);
+              expect(tapSpy.callCount).to.be.eql(1);
+              done();
+            }, { emulateTouch: true });
+          });
+        });
+      });
     });
 
   </script>

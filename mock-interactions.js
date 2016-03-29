@@ -116,7 +116,7 @@
    * @param {Object} xy The (x,y) coordinates the mouse event should be fired from.
    * @param {HTMLElement} node The node to fire the event on.
    */
-  function makeEvent(type, xy, node) {
+  function makeMouseEvent(type, xy, node) {
     var props = {
       bubbles: true,
       cancelable: true,
@@ -126,13 +126,12 @@
       buttons: 1 // http://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
     };
     var e;
-    var mousetype = type === 'tap' ? 'click' : 'mouse' + type;
     if (HAS_NEW_MOUSE) {
-      e = new MouseEvent(mousetype, props);
+      e = new MouseEvent(type, props);
     } else {
       e = document.createEvent('MouseEvent');
       e.initMouseEvent(
-        mousetype, props.bubbles, props.cancelable,
+        type, props.bubbles, props.cancelable,
         null, /* view */
         null, /* detail */
         0,    /* screenX */
@@ -167,11 +166,11 @@
       y: fromXY.y
     };
     for (var i = steps; i > 0; i--) {
-      makeEvent('move', xy, node);
+      makeMouseEvent('mousemove', xy, node);
       xy.x += dx;
       xy.y += dy;
     }
-    makeEvent('move', {
+    makeMouseEvent('mousemove', {
       x: toXY.x,
       y: toXY.y
     }, node);
@@ -207,19 +206,10 @@
    *
    * @param {HTMLElement} node The node to fire the event on.
    * @param {?Object} xy Optional. The (x,y) coordinates the mouse event should be fired from.
-   * @param {?{
-   *   emulateTouch: boolean
-   * }} options Optional. Configure the emulation fidelity of the mouse event.
    */
-  function down(node, xy, options) {
+  function down(node, xy) {
     xy = xy || middleOfNode(node);
-    if (options && options.emulateTouch) {
-      makeSoloTouchEvent('touchstart', xy, node);
-      if (IS_TOUCH_ONLY) {
-        return;
-      }
-    }
-    makeEvent('down', xy, node);
+    makeMouseEvent('mousedown', xy, node);
   }
 
   /*
@@ -229,19 +219,44 @@
    *
    * @param {HTMLElement} node The node to fire the event on.
    * @param {?Object} xy Optional. The (x,y) coordinates the mouse event should be fired from.
-   * @param {?{
-   *   emulateTouch: boolean
-   * }} options Optional. Configure the emulation fidelity of the mouse event.
    */
-  function up(node, xy, options) {
+  function up(node, xy) {
     xy = xy || middleOfNode(node);
-    if (options && options.emulateTouch) {
-      makeSoloTouchEvent('touchend', xy, node);
-      if (IS_TOUCH_ONLY) {
-        return;
-      }
-    }
-    makeEvent('up', xy, node);
+    makeMouseEvent('mouseup', xy, node);
+  }
+
+  /**
+   * Generate a click event on a given node, optionally at a given coordinate.
+   * @param {HTMLElement} node The node to fire the click event on.
+   * @param {?Object} xy Optional. The (x,y) coordinates the mouse event should
+   * be fired from.
+   */
+  function click(node, xy) {
+    xy = xy || middleOfNode(node);
+    makeMouseEvent('click', xy, node);
+  }
+
+  /**
+   * Generate a touchstart event on a given node, optionally at a given coordinate.
+   * @param {HTMLElement} node The node to fire the click event on.
+   * @param {?Object} xy Optional. The (x,y) coordinates the touch event should
+   * be fired from.
+   */
+  function touchstart(node, xy) {
+    xy = xy || middleOfNode(node);
+    makeSoloTouchEvent('touchstart', xy, node);
+  }
+
+
+  /**
+   * Generate a touchend event on a given node, optionally at a given coordinate.
+   * @param {HTMLElement} node The node to fire the click event on.
+   * @param {?Object} xy Optional. The (x,y) coordinates the touch event should
+   * be fired from.
+   */
+  function touchend(node, xy) {
+    xy = xy || middleOfNode(node);
+    makeSoloTouchEvent('touchend', xy, node);
   }
 
   /*
@@ -256,10 +271,15 @@
    * }} options Optional. Configure the emulation fidelity of the mouse events.
    */
   function downAndUp(target, callback, options) {
-    down(target, null, options);
-    Polymer.Base.async(function() {
-      up(target, null, options);
+    if (options && options.emulateTouch) {
+      touchstart(target);
+      touchend(target);
+    }
 
+    down(target);
+    Polymer.Base.async(function() {
+      up(target);
+      click(target);
       callback && callback();
     });
   }
@@ -279,9 +299,15 @@
       return;
 
     var xy = middleOfNode(node);
-    down(node, xy, options);
-    up(node, xy, options);
-    makeEvent('tap', xy, node);
+
+    if (options && options.emulateTouch) {
+      touchstart(node, xy);
+      touchend(node, xy);
+    }
+
+    down(node, xy);
+    up(node, xy);
+    click(node, xy);
   }
 
   /*
