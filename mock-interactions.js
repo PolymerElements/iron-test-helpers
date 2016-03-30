@@ -11,14 +11,6 @@
 (function(global) {
   'use strict';
 
-  /**
-   * TODO(cdata): Remove this when one of the following things happens:
-   *  - Polymer stops using a UA string test in Gestures code.
-   *  - Polymer makes the UA string it uses to test public.
-   * Track Polymer/polymer#3538 for progress on this.
-   */
-  var IS_TOUCH_ONLY = navigator.userAgent.match(/iP(?:[oa]d|hone)|Android/);
-
   var HAS_NEW_MOUSE = (function() {
     var has = false;
     try {
