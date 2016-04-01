@@ -332,9 +332,10 @@
    * @param {string} type The type of keyboard event (such as 'keyup' or 'keydown').
    * @param {number} keyCode The keyCode for the event.
    * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
-   * Accepted values are shift, ctrl, alt, meta.
+   *     Accepted values are shift, ctrl, alt, meta.
+   * @param {string=} key The KeyboardEvent.key value for the event.
    */
-  function keyboardEventFor(type, keyCode, modifiers) {
+  function keyboardEventFor(type, keyCode, modifiers, key) {
     var event = new CustomEvent(type, {
       bubbles: true,
       cancelable: true
@@ -352,6 +353,8 @@
     event.ctrlKey = modifiers.indexOf('ctrl') !== -1;
     event.metaKey = modifiers.indexOf('meta') !== -1;
 
+    event.key = key;
+
     return event;
   }
 
@@ -362,10 +365,11 @@
    * @param {string} type The type of keyboard event (such as 'keyup' or 'keydown').
    * @param {number} keyCode The keyCode for the event.
    * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
-   * Accepted values are shift, ctrl, alt, meta.
+   *     Accepted values are shift, ctrl, alt, meta.
+   * @param {string=} key The KeyboardEvent.key value for the event.
    */
-  function keyEventOn(target, type, keyCode, modifiers) {
-    target.dispatchEvent(keyboardEventFor(type, keyCode, modifiers));
+  function keyEventOn(target, type, keyCode, modifiers, key) {
+    target.dispatchEvent(keyboardEventFor(type, keyCode, modifiers, key));
   }
 
   /**
@@ -374,10 +378,11 @@
    * @param {!HTMLElement} target The node to fire the event on.
    * @param {number} keyCode The keyCode for the event.
    * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
-   * Accepted values are shift, ctrl, alt, meta.
+   *     Accepted values are shift, ctrl, alt, meta.
+   * @param {string=} key The KeyboardEvent.key value for the event.
    */
-  function keyDownOn(target, keyCode, modifiers) {
-    keyEventOn(target, 'keydown', keyCode, modifiers);
+  function keyDownOn(target, keyCode, modifiers, key) {
+    keyEventOn(target, 'keydown', keyCode, modifiers, key);
   }
 
   /**
@@ -386,10 +391,11 @@
    * @param {!HTMLElement} target The node to fire the event on.
    * @param {number} keyCode The keyCode for the event.
    * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
-   * Accepted values are shift, ctrl, alt, meta.
+   *     Accepted values are shift, ctrl, alt, meta.
+   * @param {string=} key The KeyboardEvent.key value for the event.
    */
-  function keyUpOn(target, keyCode, modifiers) {
-    keyEventOn(target, 'keyup', keyCode, modifiers);
+  function keyUpOn(target, keyCode, modifiers, key) {
+    keyEventOn(target, 'keyup', keyCode, modifiers, key);
   }
 
   /**
@@ -399,12 +405,13 @@
    * @param {!HTMLElement} target The node to fire the event on.
    * @param {number} keyCode The keyCode for the event.
    * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
-   * Accepted values are shift, ctrl, alt, meta.
+   *     Accepted values are shift, ctrl, alt, meta.
+   * @param {string=} key The KeyboardEvent.key value for the event.
    */
-  function pressAndReleaseKeyOn(target, keyCode, modifiers) {
-    keyDownOn(target, keyCode, modifiers);
+  function pressAndReleaseKeyOn(target, keyCode, modifiers, key) {
+    keyDownOn(target, keyCode, modifiers, key);
     Polymer.Base.async(function() {
-      keyUpOn(target, keyCode, modifiers);
+      keyUpOn(target, keyCode, modifiers, key);
     }, 1);
   }
 
@@ -441,6 +448,7 @@
     pressSpace: pressSpace,
     keyDownOn: keyDownOn,
     keyUpOn: keyUpOn,
+    keyboardEventFor: keyboardEventFor,
     keyEventOn: keyEventOn,
     middleOfNode: middleOfNode,
     topLeftOfNode: topLeftOfNode
