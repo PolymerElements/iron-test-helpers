@@ -30,13 +30,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
     suite('MockInteractions', function() {
-      var button;
+      var button, spies;
 
       setup(function() {
         button = fixture('TrivialButton');
+        spies = {
+          tap: sinon.spy(),
+          touchstart: sinon.spy(),
+          mousedown: sinon.spy(),
+          touchend: sinon.spy(),
+          mouseup: sinon.spy()
+        };
+        for (var eventName in spies) {
+          button.addEventListener(eventName, spies[eventName]);
+        }
       });
 
       teardown(function(done) {
+        for (var eventName in spies) {
+          button.removeEventListener(eventName, spies[eventName]);
+        }
         // TODO(cdata): Remove when polymer/polymer#3540 is resolved
         window.setTimeout(function() {
           done();
@@ -45,44 +58,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suite('simulating tap', function() {
         test('only dispatches one tap event', function() {
-          var tapSpy = sinon.spy();
-          button.addEventListener('tap', tapSpy);
           MockInteractions.tap(button);
-          button.removeEventListener('tap', tapSpy);
-          expect(tapSpy.callCount).to.be.eql(1);
+          assert.equal(0, spies.touchstart.callCount, 'no touchstart');
+          assert.equal(0, spies.touchend.callCount, 'no touchend');
+          assert.equal(1, spies.mousedown.callCount, 'mousedown ok');
+          assert.equal(1, spies.mouseup.callCount, 'mouseup ok');
+          assert.equal(1, spies.tap.callCount, 'tap ok');
+          assert.isTrue(spies.mouseup.calledAfter(spies.mousedown), 'mouseup after mousedown');
         });
 
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function() {
-            var tapSpy = sinon.spy();
-            button.addEventListener('tap', tapSpy);
             MockInteractions.tap(button, { emulateTouch: true });
-            button.removeEventListener('tap', tapSpy);
-            expect(tapSpy.callCount).to.be.eql(1);
+            assert.equal(1, spies.touchstart.callCount, 'touchstart ok');
+            assert.equal(1, spies.touchend.callCount, 'touchend ok');
+            assert.equal(0, spies.mousedown.callCount, 'no mousedown');
+            assert.equal(0, spies.mouseup.callCount, 'no mouseup');
+            assert.equal(1, spies.tap.callCount, 'tap ok');
+            assert.isTrue(spies.touchend.calledAfter(spies.touchstart), 'touchend after touchstart');
           });
         });
       });
 
       suite('simulating down and up', function() {
         test('only dispatches one tap event', function(done) {
-          var tapSpy = sinon.spy();
-          button.addEventListener('tap', tapSpy);
           MockInteractions.downAndUp(button, function() {
-            button.removeEventListener('tap', tapSpy);
-            expect(tapSpy.callCount).to.be.eql(1);
+            assert.equal(0, spies.touchstart.callCount, 'still no touchstart');
+            assert.equal(0, spies.touchend.callCount, 'no touchend');
+            assert.equal(1, spies.mousedown.callCount, 'mousedown still ok');
+            assert.equal(1, spies.mouseup.callCount, 'mouseup ok');
+            assert.equal(1, spies.tap.callCount, 'tap ok');
+            assert.isTrue(spies.mouseup.calledAfter(spies.mousedown), 'mouseup after mousedown');
             done();
           });
+          assert.equal(1, spies.mousedown.callCount, 'mousedown ok');
+          assert.equal(0, spies.touchstart.callCount, 'no touchstart');
         });
 
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function(done) {
-            var tapSpy = sinon.spy();
-            button.addEventListener('tap', tapSpy);
             MockInteractions.downAndUp(button, function() {
-              button.removeEventListener('tap', tapSpy);
-              expect(tapSpy.callCount).to.be.eql(1);
+              assert.equal(1, spies.touchstart.callCount, 'touchstart still ok');
+              assert.equal(1, spies.touchend.callCount, 'touchend ok');
+              assert.equal(0, spies.mousedown.callCount, 'still no mousedown');
+              assert.equal(0, spies.mouseup.callCount, 'no mouseup');
+              assert.equal(1, spies.tap.callCount, 'tap ok');
+              assert.isTrue(spies.touchend.calledAfter(spies.touchstart), 'touchend after touchstart');
               done();
             }, { emulateTouch: true });
+            assert.equal(0, spies.mousedown.callCount, 'no mousedown');
+            assert.equal(1, spies.touchstart.callCount, 'touchstart ok');
           });
         });
       });

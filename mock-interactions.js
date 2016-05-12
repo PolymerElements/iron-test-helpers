@@ -263,14 +263,12 @@
    * }} options Optional. Configure the emulation fidelity of the mouse events.
    */
   function downAndUp(target, callback, options) {
-    if (options && options.emulateTouch) {
-      touchstart(target);
-      touchend(target);
-    }
+    var fnStart = options && options.emulateTouch ? touchstart : down;
+    var fnEnd = options && options.emulateTouch ? touchend : up;
 
-    down(target);
+    fnStart(target);
     Polymer.Base.async(function() {
-      up(target);
+      fnEnd(target);
       click(target);
       callback && callback();
     });
@@ -295,10 +293,11 @@
     if (options && options.emulateTouch) {
       touchstart(node, xy);
       touchend(node, xy);
+    } else {
+      down(node, xy);
+      up(node, xy);
     }
 
-    down(node, xy);
-    up(node, xy);
     click(node, xy);
   }
 
