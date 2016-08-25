@@ -97,7 +97,12 @@
     if (window.TouchEvent) {
       event = new TouchEvent(type, touchEventInit);
     } else {
-      event = new CustomEvent(type, { bubbles: true, cancelable: true });
+      event = new CustomEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        // Allow event to go outside a ShadowRoot.
+        composed: true
+      });
       for (var property in touchEventInit) {
         event[property] = touchEventInit[property];
       }
@@ -120,6 +125,8 @@
       cancelable: true,
       clientX: xy.x,
       clientY: xy.y,
+      // Allow event to go outside a ShadowRoot.
+      composed: true,
       // Make this a primary input.
       buttons: 1 // http://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
     };
@@ -345,7 +352,9 @@
     var event = new CustomEvent(type, {
       detail: 0,
       bubbles: true,
-      cancelable: true
+      cancelable: true,
+      // Allow event to go outside a ShadowRoot.
+      composed: true
     });
 
     event.keyCode = keyCode;
