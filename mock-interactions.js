@@ -8,8 +8,14 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-(function(global) {
+// We declare it as a namespace to be compatible with JSCompiler.
+/** @const */ var MockInteractions = {};
+
+(function(scope, global) {
   'use strict';
+
+  // In case the var above was not global, or if it was renamed.
+  global.MockInteractions = scope;
 
   var HAS_NEW_MOUSE = (function() {
     var has = false;
@@ -436,22 +442,20 @@
     pressAndReleaseKeyOn(target, 32);
   }
 
-  global.MockInteractions = {
-    focus: focus,
-    blur: blur,
-    down: down,
-    up: up,
-    downAndUp: downAndUp,
-    tap: tap,
-    track: track,
-    pressAndReleaseKeyOn: pressAndReleaseKeyOn,
-    pressEnter: pressEnter,
-    pressSpace: pressSpace,
-    keyDownOn: keyDownOn,
-    keyUpOn: keyUpOn,
-    keyboardEventFor: keyboardEventFor,
-    keyEventOn: keyEventOn,
-    middleOfNode: middleOfNode,
-    topLeftOfNode: topLeftOfNode
-  };
-})(this);
+  scope.focus = focus;
+  scope.blur = blur;
+  scope.down = down;
+  scope.up = up;
+  scope.downAndUp = downAndUp;
+  scope.tap = tap;
+  scope.track = track;
+  scope.pressAndReleaseKeyOn = pressAndReleaseKeyOn;
+  scope.pressEnter = pressEnter;
+  scope.pressSpace = pressSpace;
+  scope.keyDownOn = keyDownOn;
+  scope.keyUpOn = keyUpOn;
+  scope.keyboardEventFor = keyboardEventFor;
+  scope.keyEventOn = keyEventOn;
+  scope.middleOfNode = middleOfNode;
+  scope.topLeftOfNode = topLeftOfNode;
+})(MockInteractions, this);

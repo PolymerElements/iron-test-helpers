@@ -8,8 +8,14 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-(function(global) {
+// We declare it as a namespace to be compatible with JSCompiler.
+/** @const */ var TestHelpers = {};
+
+(function(scope, global) {
   'use strict';
+
+  // In case the var above was not global, or if it was renamed.
+  global.TestHelpers = scope;
 
   /**
    * Forces distribution of light children, and lifecycle callbacks on the
@@ -87,10 +93,8 @@
     };
   };
 
-  global.TestHelpers = {
-    flushAsynchronousOperations: global.flushAsynchronousOperations,
-    forceXIfStamp: global.forceXIfStamp,
-    fireEvent: global.fireEvent,
-    skipUnless: global.skipUnless
-  };
-})(this);
+  scope.flushAsynchronousOperations = global.flushAsynchronousOperations;
+  scope.forceXIfStamp = global.forceXIfStamp;
+  scope.fireEvent = global.fireEvent;
+  scope.skipUnless = global.skipUnless;
+})(TestHelpers, this);
