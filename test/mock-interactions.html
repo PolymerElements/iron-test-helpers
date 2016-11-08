@@ -36,17 +36,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         button = fixture('TrivialButton');
       });
 
-      teardown(function(done) {
-        // TODO(valdrin): Remove when Polymer/polymer#3928 gets solved.
-        if (Polymer.Gestures.resetMouseCanceller) {
-          Polymer.Gestures.resetMouseCanceller();
-          done();
-        } else {
-          window.setTimeout(function() {
-            done();
-          }, 2600);
-        }
-       });
+      teardown(function() {
+        Polymer.Gestures.resetMouseCanceller();
+      });
 
       suite('simulating tap', function() {
         test('only dispatches one tap event', function() {
