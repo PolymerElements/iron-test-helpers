@@ -448,6 +448,7 @@
   scope.up = up;
   scope.downAndUp = downAndUp;
   scope.tap = tap;
+  scope.move = move;
   scope.track = track;
   scope.pressAndReleaseKeyOn = pressAndReleaseKeyOn;
   scope.pressEnter = pressEnter;
