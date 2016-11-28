@@ -350,6 +350,7 @@
 
     event.keyCode = keyCode;
     event.code = keyCode;
+    event.which = keyCode;
 
     modifiers = modifiers || [];
     if (typeof modifiers === 'string') {
