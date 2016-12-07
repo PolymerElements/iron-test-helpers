@@ -117,9 +117,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           test('only dispatches one tap event', function() {
             button = button.$.inner;
             var tapSpy = sinon.spy();
-            button.addEventListener('tap', tapSpy);
+            Polymer.Gestures.add(button, 'tap', tapSpy);
             MockInteractions.tap(button, { emulateTouch: true });
-            button.removeEventListener('tap', tapSpy);
+            Polymer.Gestures.remove(button, 'tap', tapSpy);
             expect(tapSpy.callCount).to.be.eql(1);
           });
         });
@@ -166,9 +166,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           test('only dispatches one tap event', function(done) {
             button = button.$.inner;
             var tapSpy = sinon.spy();
-            button.addEventListener('tap', tapSpy);
+            Polymer.Gestures.add(button, 'tap', tapSpy);
             MockInteractions.downAndUp(button, function() {
-              button.removeEventListener('tap', tapSpy);
+              Polymer.Gestures.remove(button, 'tap', tapSpy);
               expect(tapSpy.callCount).to.be.eql(1);
               done();
             }, { emulateTouch: true });
