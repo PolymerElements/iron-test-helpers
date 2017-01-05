@@ -95,6 +95,8 @@
     var event;
 
     if (window.TouchEvent) {
+      touchEventInit.bubbles = true;
+      touchEventInit.cancelable = true;
       event = new TouchEvent(type, touchEventInit);
     } else {
       event = new CustomEvent(type, { bubbles: true, cancelable: true });
