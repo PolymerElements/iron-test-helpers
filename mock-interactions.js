@@ -450,6 +450,7 @@
   scope.up = up;
   scope.downAndUp = downAndUp;
   scope.tap = tap;
+  scope.move = move;
   scope.touchstart = touchstart;
   scope.touchend = touchend;
   scope.makeSoloTouchEvent = makeSoloTouchEvent;
