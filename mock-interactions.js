@@ -454,6 +454,7 @@
   scope.touchstart = touchstart;
   scope.touchend = touchend;
   scope.makeSoloTouchEvent = makeSoloTouchEvent;
+  scope.makeMouseEvent = makeMouseEvent;
   scope.track = track;
   scope.pressAndReleaseKeyOn = pressAndReleaseKeyOn;
   scope.pressEnter = pressEnter;
