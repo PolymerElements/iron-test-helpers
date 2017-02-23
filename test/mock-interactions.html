@@ -36,11 +36,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         button = fixture('TrivialButton');
       });
 
-      teardown(function(done) {
-        // TODO(cdata): Remove when polymer/polymer#3540 is resolved
-        window.setTimeout(function() {
-          done();
-        }, 2500);
+      teardown(function() {
+        Polymer.Gestures.resetMouseCanceller();
       });
 
       suite('class registration', function() {
@@ -104,6 +101,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               done();
             }, { emulateTouch: true });
           });
+        });
+      });
+
+      suite('simulating track', function() {
+        test('dispatches events with correct steps', function() {
+          var spy = sinon.spy();
+          button.handleTrack = spy;
+          button.listen(button, 'track', 'handleTrack');
+          MockInteractions.track(button, 50, 50, 5);
+
+          var steps = [10, 20, 30, 40, 50, 50];
+          for (var i = 0, l = steps.length; i < l; i++) {
+            expect(spy.getCall(i).args[0].detail.dx).to.be.eql(steps[i]);
+            expect(spy.getCall(i).args[0].detail.dy).to.be.eql(steps[i]);
+          }
         });
       });
     });

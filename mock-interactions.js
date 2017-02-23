@@ -167,8 +167,8 @@
    */
   function move(node, fromXY, toXY, steps) {
     steps = steps || 5;
-    var dx = Math.round((fromXY.x - toXY.x) / steps);
-    var dy = Math.round((fromXY.y - toXY.y) / steps);
+    var dx = Math.round((toXY.x - fromXY.x) / steps);
+    var dy = Math.round((toXY.y - fromXY.y) / steps);
     var xy = {
       x: fromXY.x,
       y: fromXY.y
