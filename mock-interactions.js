@@ -456,6 +456,7 @@
   scope.blur = blur;
   scope.down = down;
   scope.up = up;
+  scope.click = click;
   scope.downAndUp = downAndUp;
   scope.tap = tap;
   scope.move = move;
