@@ -24,6 +24,14 @@
     } catch (_) {}
     return has;
   })();
+  
+  var HAS_NEW_TOUCH = (function() {
+    var has = false;
+    try {
+      has = Boolean(new TouchEvent('x'));
+    } catch (_) {}
+    return has;
+  })();
 
   /**
    * Returns the (x,y) coordinates representing the middle of a node.
@@ -70,7 +78,7 @@
         clientY: xy.y
       };
 
-      return window.Touch ? new window.Touch(touchInit) : touchInit;
+      return HAS_NEW_TOUCH ? new window.Touch(touchInit) : touchInit;
     });
   }
 
@@ -94,7 +102,9 @@
     };
     var event;
 
-    if (window.TouchEvent) {
+    if (HAS_NEW_TOUCH) {
+      touchEventInit.bubbles = true;
+      touchEventInit.cancelable = true;
       event = new TouchEvent(type, touchEventInit);
     } else {
       event = new CustomEvent(type, {
@@ -457,6 +467,10 @@
   scope.up = up;
   scope.downAndUp = downAndUp;
   scope.tap = tap;
+  scope.move = move;
+  scope.touchstart = touchstart;
+  scope.touchend = touchend;
+  scope.makeSoloTouchEvent = makeSoloTouchEvent;
   scope.track = track;
   scope.pressAndReleaseKeyOn = pressAndReleaseKeyOn;
   scope.pressEnter = pressEnter;
