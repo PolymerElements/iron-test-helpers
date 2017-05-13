@@ -1,4 +1,3 @@
-<!doctype html>
 <!--
 @license
 Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
@@ -8,20 +7,32 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>iron-test-helpers tests</title>
-  <script src="../../web-component-tester/browser.js"></script>
-</head>
-<body>
+
+<link rel="import" href="../../polymer/polymer.html">
+
+<dom-module id="test-button">
+  <template>
+    <button id="inner">[[text]]</button>
+  </template>
+
   <script>
-    WCT.loadSuites([
-      'mock-interactions.html?wc-shadydom=true&wc-ce=true', // shady
-      'mock-interactions.html?dom=shadow', // shadow
-      'test-helpers.html'
-    ]);
+    (function() {
+      Polymer({
+        is: 'test-button',
+        properties: {
+          text: {
+            type: String
+          }
+        },
+
+        listeners: {
+          'tap': '_onTap'
+        },
+
+        _onTap: function() {
+          console.log('tapped');
+        }
+      });
+    })();
   </script>
-</body>
-</html>
+</dom-module>
