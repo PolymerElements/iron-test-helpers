@@ -17,14 +17,17 @@
   // In case the var above was not global, or if it was renamed.
   global.MockInteractions = scope;
 
-  var HAS_NEW_MOUSE = (function() {
-    var has = false;
-    try {
-      has = Boolean(new MouseEvent('x'));
-    } catch (_) {}
-    return has;
-  })();
-  
+  var HAS_NEW_MOUSE;
+  window.addEventListener('WebComponentsReady', function() {
+    HAS_NEW_MOUSE = (function() {
+      var has = false;
+      try {
+        has = Boolean(new MouseEvent('x'));
+      } catch (_) {}
+      return has;
+    })();
+  });
+
   var HAS_NEW_TOUCH = (function() {
     var has = false;
     try {
