@@ -240,6 +240,45 @@
     makeMouseEvent('mouseup', xy, node);
   }
 
+    /**
+     * Fires a `mouseenter` mouse event on a specific node, at a given set of coordinates.
+     * This event bubbles and is cancellable. If the (x,y) coordinates are
+     * not specified, the middle of the node will be used instead.
+     *
+     * @param {!Element} node The node to fire the event on.
+     * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
+     */
+    function mouseenter(node, xy) {
+        xy = xy || middleOfNode(node);
+        makeMouseEvent('mouseenter', xy, node);
+    }
+
+    /**
+     * Fires a `mouseenter` mouse event on a specific node, at a given set of coordinates.
+     * This event bubbles and is cancellable. If the (x,y) coordinates are
+     * not specified, the middle of the node will be used instead.
+     *
+     * @param {!Element} node The node to fire the event on.
+     * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
+     */
+    function mouseover(node, xy) {
+        xy = xy || middleOfNode(node);
+        makeMouseEvent('mouseover', xy, node);
+    }
+
+    /**
+     * Fires a `mouseleave` mouse event on a specific node, at a given set of coordinates.
+     * This event bubbles and is cancellable. If the (x,y) coordinates are
+     * not specified, the middle of the node will be used instead.
+     *
+     * @param {!Element} node The node to fire the event on.
+     * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
+     */
+    function mouseleave(node, xy) {
+        xy = xy || middleOfNode(node);
+        makeMouseEvent('mouseleave', xy, node);
+    }
+
   /**
    * Generate a click event on a given node, optionally at a given coordinate.
    * @param {!Element} node The node to fire the click event on.
@@ -466,6 +505,9 @@
   scope.down = down;
   scope.up = up;
   scope.downAndUp = downAndUp;
+  scope.mouseenter = mouseenter;
+  scope.mouseleave = mouseleave;
+  scope.mouseover = mouseover;
   scope.tap = tap;
   scope.move = move;
   scope.touchstart = touchstart;
