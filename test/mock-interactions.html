@@ -175,7 +175,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
         });
       });
-        suite('simulating mouseenter and mouseleave', function() {
+        suite('simulating mouse events', function() {
             test('mouseenter event gets dispatched', function(done) {
                 button.addEventListener('mouseenter', function(event) {
                     expect(event).to.exist;
@@ -191,6 +191,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     done();
                 });
                 MockInteractions.mouseleave(button);
+            });
+            test('mouseover event gets dispatched', function(done) {
+                button.addEventListener('mouseover', function(event) {
+                    expect(event).to.exist;
+                    expect(event.type).to.be.eql('mouseover');
+                    done();
+                });
+                MockInteractions.mouseover(button);
             });
         });
     });
