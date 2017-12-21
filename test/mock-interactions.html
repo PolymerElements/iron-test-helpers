@@ -175,6 +175,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
         });
       });
+
+      suite('simulating mouse events', function() {
+            test('mouseenter event gets dispatched', function(done) {
+                button.addEventListener('mouseenter', function(event) {
+                    expect(event).to.exist;
+                    expect(event.type).to.be.eql('mouseenter');
+                    done();
+                });
+                MockInteractions.mouseenter(button);
+            });
+            test('mouseleave event gets dispatched', function(done) {
+                button.addEventListener('mouseleave', function(event) {
+                    expect(event).to.exist;
+                    expect(event.type).to.be.eql('mouseleave');
+                    done();
+                });
+                MockInteractions.mouseleave(button);
+            });
+            test('mouseover event gets dispatched', function(done) {
+                button.addEventListener('mouseover', function(event) {
+                    expect(event).to.exist;
+                    expect(event.type).to.be.eql('mouseover');
+                    done();
+                });
+                MockInteractions.mouseover(button);
+            });
+        });
     });
 
   </script>
