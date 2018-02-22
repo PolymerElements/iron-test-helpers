@@ -49,6 +49,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(tapSpy.callCount).to.be.eql(1);
         });
 
+        test('dispatches tap event with shift pressed', function(done) {
+          var tapSpy = function(e) {
+            button.removeEventListener('click', tapSpy);
+            expect(e.shiftKey).to.be.true;
+            done();
+          };
+          button.addEventListener('click', tapSpy);
+          MockInteractions.tap(button, {shiftKey: true});
+        });
+
+        test('dispatches tap event with ctrl pressed', function(done) {
+          var tapSpy = function(e) {
+            button.removeEventListener('click', tapSpy);
+            expect(e.ctrlKey).to.be.true;
+            done();
+          };
+          button.addEventListener('click', tapSpy);
+          MockInteractions.tap(button, {ctrlKey: true});
+        });
+
+        test('dispatches tap event with alt pressed', function(done) {
+          var tapSpy = function(e) {
+            button.removeEventListener('click', tapSpy);
+            expect(e.altKey).to.be.true;
+            done();
+          };
+          button.addEventListener('click', tapSpy);
+          MockInteractions.tap(button, {altKey: true});
+        });
+
+        test('dispatches tap event with the meta-key pressed', function(done) {
+          var tapSpy = function(e) {
+            button.removeEventListener('click', tapSpy);
+            expect(e.metaKey).to.be.true;
+            done();
+          };
+          button.addEventListener('click', tapSpy);
+          MockInteractions.tap(button, {metaKey: true});
+        });
+
+
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function() {
             var tapSpy = sinon.spy();

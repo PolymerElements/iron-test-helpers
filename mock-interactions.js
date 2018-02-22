@@ -129,7 +129,7 @@
    * @param {{ x: number, y: number }} xy The (x,y) coordinates the mouse event should be fired from.
    * @param {!Element} node The node to fire the event on.
    */
-  function makeMouseEvent(type, xy, node) {
+  function makeMouseEvent(type, xy, node, options) {
     var props = {
       bubbles: true,
       cancelable: true,
@@ -140,6 +140,13 @@
       // Make this a primary input.
       buttons: 1 // http://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
     };
+    if (options) {
+      props.ctrlKey = options.ctrlKey || false;
+      props.altKey = options.altKey || false;
+      props.shiftKey = options.shiftKey || false;
+      props.metaKey = options.metaKey || false;
+    }
+
     var e;
     if (HAS_NEW_MOUSE) {
       e = new MouseEvent(type, props);
@@ -152,10 +159,10 @@
         0,    /* screenX */
         0,    /* screenY */
         props.clientX, props.clientY,
-        false, /*ctrlKey */
-        false, /*altKey */
-        false, /*shiftKey */
-        false, /*metaKey */
+        options.ctrlKey || false, /*ctrlKey */
+        options.altKey || false, /*altKey */
+        options.shiftKey || false, /*shiftKey */
+        options.metaKey || false, /*metaKey */
         0,     /*button */
         null   /*relatedTarget*/);
     }
@@ -222,9 +229,9 @@
    * @param {!Element} node The node to fire the event on.
    * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
    */
-  function down(node, xy) {
+  function down(node, xy, options) {
     xy = xy || middleOfNode(node);
-    makeMouseEvent('mousedown', xy, node);
+    makeMouseEvent('mousedown', xy, node, options);
   }
 
   /**
@@ -235,9 +242,9 @@
    * @param {!Element} node The node to fire the event on.
    * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
    */
-  function up(node, xy) {
+  function up(node, xy, options) {
     xy = xy || middleOfNode(node);
-    makeMouseEvent('mouseup', xy, node);
+    makeMouseEvent('mouseup', xy, node, options);
   }
 
   /**
@@ -246,9 +253,9 @@
    * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should
    * be fired from.
    */
-  function click(node, xy) {
+  function click(node, xy, options) {
     xy = xy || middleOfNode(node);
-    makeMouseEvent('click', xy, node);
+    makeMouseEvent('click', xy, node, options);
   }
 
   /**
@@ -291,10 +298,10 @@
       touchend(target);
     }
 
-    down(target);
+    down(target, options);
     Polymer.Base.async(function() {
-      up(target);
-      click(target);
+      up(target, options);
+      click(target, options);
       callback && callback();
     });
   }
@@ -320,9 +327,9 @@
       touchend(node, xy);
     }
 
-    down(node, xy);
-    up(node, xy);
-    click(node, xy);
+    down(node, xy, options);
+    up(node, xy, options);
+    click(node, xy, options);
   }
 
   /**
