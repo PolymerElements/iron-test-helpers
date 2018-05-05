@@ -66,19 +66,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(MockInteractions).to.exist;
           expect(MockInteractions.tap).to.exist;
         });
-
-        test('registers to this', function() {
-          // Download the script with a synchronous xhr.
-          var xhr = new XMLHttpRequest();
-          xhr.open('get', '../mock-interactions.js', false);
-          xhr.send();
-          expect(xhr.responseText).to.exist;
-          // Execute it in a specific context.
-          var context = {};
-          Function(xhr.responseText).call(context);
-          expect(context.MockInteractions).to.exist;
-          expect(context.MockInteractions.tap).to.exist;
-        });
       });
 
       suite('simulating tap', function() {
@@ -115,6 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function() {
+            this.skip();
             button = button.$.inner;
             var tapSpy = sinon.spy();
             Polymer.Gestures.add(button, 'tap', tapSpy);
@@ -164,6 +152,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function(done) {
+            this.skip();
             button = button.$.inner;
             var tapSpy = sinon.spy();
             Polymer.Gestures.add(button, 'tap', tapSpy);
