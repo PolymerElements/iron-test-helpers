@@ -102,7 +102,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function() {
-            this.skip();
             button = button.$.inner;
             var tapSpy = sinon.spy();
             Polymer.Gestures.add(button, 'tap', tapSpy);
@@ -152,7 +151,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function(done) {
-            this.skip();
             button = button.$.inner;
             var tapSpy = sinon.spy();
             Polymer.Gestures.add(button, 'tap', tapSpy);
