@@ -114,7 +114,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function() {
             var tapSpy = sinon.spy();
-            button.$.inner.addEventListener('tap', tapSpy);
+            // In Polymer 1.x we need to patch the button with Gestures.add 
+            // in order to have the listener working.
+            if (!Polymer.Element && Polymer.Settings.useShadow) {
+              Polymer.Gestures.add(button.$.inner, 'tap', tapSpy);
+            } else { 
+              button.$.inner.addEventListener('tap', tapSpy);
+            }
             MockInteractions.tap(button.$.inner, { emulateTouch: true });
             expect(tapSpy.callCount).to.be.eql(1);
           });
@@ -159,7 +165,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function(done) {
             var tapSpy = sinon.spy();
-            button.$.inner.addEventListener('tap', tapSpy);
+            // In Polymer 1.x we need to patch the button with Gestures.add 
+            // in order to have the listener working.
+            if (!Polymer.Element && Polymer.Settings.useShadow) {
+              Polymer.Gestures.add(button.$.inner, 'tap', tapSpy);
+            } else { 
+              button.$.inner.addEventListener('tap', tapSpy);
+            }
             MockInteractions.downAndUp(button.$.inner, function() {
               expect(tapSpy.callCount).to.be.eql(1);
               done();
