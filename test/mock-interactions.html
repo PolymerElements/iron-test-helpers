@@ -114,8 +114,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function() {
             var tapSpy = sinon.spy();
-            // In Polymer 1.x we need to patch the button with Gestures.add 
-            // in order to have the listener working.
+            // In Polymer 1.x with native ShadowDOM we need to
+            // patch the button with Gestures.add in order to have
+            // the touch emulation working.
             if (!Polymer.Element && Polymer.Settings.useShadow) {
               Polymer.Gestures.add(button.$.inner, 'tap', tapSpy);
             } else { 
@@ -165,8 +166,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('with touch emulation', function() {
           test('only dispatches one tap event', function(done) {
             var tapSpy = sinon.spy();
-            // In Polymer 1.x we need to patch the button with Gestures.add 
-            // in order to have the listener working.
+            // In Polymer 1.x with native ShadowDOM we need to
+            // patch the button with Gestures.add in order to have
+            // the touch emulation working.
             if (!Polymer.Element && Polymer.Settings.useShadow) {
               Polymer.Gestures.add(button.$.inner, 'tap', tapSpy);
             } else { 
