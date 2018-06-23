@@ -1,0 +1,32 @@
+{
+  "files": {
+    "iron-test-helpers.html": {
+      "convertedUrl": "iron-test-helpers.js",
+      "exports": {}
+    },
+    "mock-interactions.html": {
+      "convertedUrl": "mock-interactions.js",
+      "exports": {}
+    },
+    "test-helpers.html": {
+      "convertedUrl": "test-helpers.js",
+      "exports": {}
+    },
+    "test/index.html": {
+      "convertedUrl": "test/index.html",
+      "exports": {}
+    },
+    "test/mock-interactions.html": {
+      "convertedUrl": "test/mock-interactions.html",
+      "exports": {}
+    },
+    "test/test-button.html": {
+      "convertedUrl": "test/test-button.js",
+      "exports": {}
+    },
+    "test/test-helpers.html": {
+      "convertedUrl": "test/test-helpers.html",
+      "exports": {}
+    }
+  }
+}
