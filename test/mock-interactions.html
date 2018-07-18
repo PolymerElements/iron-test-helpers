@@ -16,9 +16,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../mock-interactions.js" type="module"></script>
-
-  <script type="module" src="./test-button.js"></script>
 </head>
 <body>
 
@@ -29,151 +26,150 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </test-fixture>
 
   <script type="module">
-import './test-button.js';
-import * as gestures from '@polymer/polymer/lib/utils/gestures.js';
-import { resetMouseCanceller } from '@polymer/polymer/lib/utils/gestures.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { useShadow } from '@polymer/polymer/lib/utils/settings.js';
-suite('MockInteractions', function() {
-  var button;
+    import './test-button.js';
+    import '../mock-interactions.js';
 
-  setup(function() {
-    button = fixture('TrivialButton');
-  });
+    import * as gestures from '@polymer/polymer/lib/utils/gestures.js';
+    import {resetMouseCanceller} from '@polymer/polymer/lib/utils/gestures.js';
+    import {useShadow} from '@polymer/polymer/lib/utils/settings.js';
+    import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 
-  teardown(function() {
-    resetMouseCanceller();
-  });
+    suite('MockInteractions', function() {
+      var button;
 
-  suite('simulating tap', function() {
-    test('only dispatches one tap event', function() {
-      var tapSpy = sinon.spy();
-      button.addEventListener('tap', tapSpy);
-      MockInteractions.tap(button);
-      button.removeEventListener('tap', tapSpy);
-      expect(tapSpy.callCount).to.be.eql(1);
-    });
-
-    suite('with touch emulation', function() {
-      test('only dispatches one tap event', function() {
-        var tapSpy = sinon.spy();
-        button.addEventListener('tap', tapSpy);
-        MockInteractions.tap(button, { emulateTouch: true });
-        button.removeEventListener('tap', tapSpy);
-        expect(tapSpy.callCount).to.be.eql(1);
+      setup(function() {
+        button = fixture('TrivialButton');
       });
-    });
 
-  });
-
-  suite('class registration', function() {
-    test('registers to window', function() {
-      expect(MockInteractions).to.exist;
-      expect(MockInteractions.tap).to.exist;
-    });
-  });
-
-  suite('simulating tap', function() {
-    test('only dispatches one tap event', function() {
-      var tapSpy = sinon.spy();
-      button.addEventListener('tap', tapSpy);
-      MockInteractions.tap(button);
-      button.removeEventListener('tap', tapSpy);
-      expect(tapSpy.callCount).to.be.eql(1);
-    });
-
-    suite('with touch emulation', function() {
-      test('only dispatches one tap event', function() {
-        var tapSpy = sinon.spy();
-        button.addEventListener('tap', tapSpy);
-        MockInteractions.tap(button, { emulateTouch: true });
-        button.removeEventListener('tap', tapSpy);
-        expect(tapSpy.callCount).to.be.eql(1);
+      teardown(function() {
+        resetMouseCanceller();
       });
-    });
 
-  });
-
-  suite('simulating tap in ShadowRoot', function() {
-
-    test('only dispatches one tap event', function() {
-      var tapSpy = sinon.spy();
-      button.$.inner.addEventListener('tap', tapSpy);
-      MockInteractions.tap(button.$.inner);
-      expect(tapSpy.callCount).to.be.eql(1);
-    });
-
-    suite('with touch emulation', function() {
-      test('only dispatches one tap event', function() {
-        var tapSpy = sinon.spy();
-        // In Polymer 1.x with native ShadowDOM we need to
-        // patch the button with Gestures.add in order to have
-        // the touch emulation working.
-        if (!PolymerElement && useShadow) {
-          gestures.add(button.$.inner, 'tap', tapSpy);
-        } else { 
-          button.$.inner.addEventListener('tap', tapSpy);
-        }
-        MockInteractions.tap(button.$.inner, { emulateTouch: true });
-        expect(tapSpy.callCount).to.be.eql(1);
-      });
-    });
-  });
-
-  suite('simulating down and up', function() {
-    test('only dispatches one tap event', function(done) {
-      var tapSpy = sinon.spy();
-      button.addEventListener('tap', tapSpy);
-      MockInteractions.downAndUp(button, function() {
-        button.removeEventListener('tap', tapSpy);
-        expect(tapSpy.callCount).to.be.eql(1);
-        done();
-      });
-    });
-
-    suite('with touch emulation', function() {
-      test('only dispatches one tap event', function(done) {
-        var tapSpy = sinon.spy();
-        button.addEventListener('tap', tapSpy);
-        MockInteractions.downAndUp(button, function() {
+      suite('simulating tap', function() {
+        test('only dispatches one tap event', function() {
+          var tapSpy = sinon.spy();
+          button.addEventListener('tap', tapSpy);
+          MockInteractions.tap(button);
           button.removeEventListener('tap', tapSpy);
           expect(tapSpy.callCount).to.be.eql(1);
-          done();
-        }, { emulateTouch: true });
+        });
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function() {
+            var tapSpy = sinon.spy();
+            button.addEventListener('tap', tapSpy);
+            MockInteractions.tap(button, {emulateTouch: true});
+            button.removeEventListener('tap', tapSpy);
+            expect(tapSpy.callCount).to.be.eql(1);
+          });
+        });
       });
-    });
-  });
 
-  suite('simulating down and up in ShadowRoot', function() {
-
-    test('only dispatches one tap event', function(done) {
-      var tapSpy = sinon.spy();
-      button.$.inner.addEventListener('tap', tapSpy);
-      MockInteractions.downAndUp(button.$.inner, function() {
-        expect(tapSpy.callCount).to.be.eql(1);
-        done();
+      suite('class registration', function() {
+        test('registers to window', function() {
+          expect(MockInteractions).to.exist;
+          expect(MockInteractions.tap).to.exist;
+        });
       });
-    });
 
-    suite('with touch emulation', function() {
-      test('only dispatches one tap event', function(done) {
-        var tapSpy = sinon.spy();
-        // In Polymer 1.x with native ShadowDOM we need to
-        // patch the button with Gestures.add in order to have
-        // the touch emulation working.
-        if (!PolymerElement && useShadow) {
-          gestures.add(button.$.inner, 'tap', tapSpy);
-        } else { 
-          button.$.inner.addEventListener('tap', tapSpy);
-        }
-        MockInteractions.downAndUp(button.$.inner, function() {
+      suite('simulating tap', function() {
+        test('only dispatches one tap event', function() {
+          var tapSpy = sinon.spy();
+          button.addEventListener('tap', tapSpy);
+          MockInteractions.tap(button);
+          button.removeEventListener('tap', tapSpy);
           expect(tapSpy.callCount).to.be.eql(1);
-          done();
-        }, { emulateTouch: true });
+        });
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function() {
+            var tapSpy = sinon.spy();
+            button.addEventListener('tap', tapSpy);
+            MockInteractions.tap(button, {emulateTouch: true});
+            button.removeEventListener('tap', tapSpy);
+            expect(tapSpy.callCount).to.be.eql(1);
+          });
+        });
+      });
+
+      suite('simulating tap in ShadowRoot', function() {
+        test('only dispatches one tap event', function() {
+          var tapSpy = sinon.spy();
+          button.$.inner.addEventListener('tap', tapSpy);
+          MockInteractions.tap(button.$.inner);
+          expect(tapSpy.callCount).to.be.eql(1);
+        });
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function() {
+            var tapSpy = sinon.spy();
+            // In Polymer 1.x with native ShadowDOM we need to
+            // patch the button with Gestures.add in order to have
+            // the touch emulation working.
+            if (!PolymerElement && useShadow) {
+              gestures.add(button.$.inner, 'tap', tapSpy);
+            } else {
+              button.$.inner.addEventListener('tap', tapSpy);
+            }
+            MockInteractions.tap(button.$.inner, {emulateTouch: true});
+            expect(tapSpy.callCount).to.be.eql(1);
+          });
+        });
+      });
+
+      suite('simulating down and up', function() {
+        test('only dispatches one tap event', function(done) {
+          var tapSpy = sinon.spy();
+          button.addEventListener('tap', tapSpy);
+          MockInteractions.downAndUp(button, function() {
+            button.removeEventListener('tap', tapSpy);
+            expect(tapSpy.callCount).to.be.eql(1);
+            done();
+          });
+        });
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function(done) {
+            var tapSpy = sinon.spy();
+            button.addEventListener('tap', tapSpy);
+            MockInteractions.downAndUp(button, function() {
+              button.removeEventListener('tap', tapSpy);
+              expect(tapSpy.callCount).to.be.eql(1);
+              done();
+            }, {emulateTouch: true});
+          });
+        });
+      });
+
+      suite('simulating down and up in ShadowRoot', function() {
+        test('only dispatches one tap event', function(done) {
+          var tapSpy = sinon.spy();
+          button.$.inner.addEventListener('tap', tapSpy);
+          MockInteractions.downAndUp(button.$.inner, function() {
+            expect(tapSpy.callCount).to.be.eql(1);
+            done();
+          });
+        });
+
+        suite('with touch emulation', function() {
+          test('only dispatches one tap event', function(done) {
+            var tapSpy = sinon.spy();
+            // In Polymer 1.x with native ShadowDOM we need to
+            // patch the button with Gestures.add in order to have
+            // the touch emulation working.
+            if (!PolymerElement && useShadow) {
+              gestures.add(button.$.inner, 'tap', tapSpy);
+            } else {
+              button.$.inner.addEventListener('tap', tapSpy);
+            }
+            MockInteractions.downAndUp(button.$.inner, function() {
+              expect(tapSpy.callCount).to.be.eql(1);
+              done();
+            }, {emulateTouch: true});
+          });
+        });
       });
     });
-  });
-});
-</script>
+  </script>
 </body>
 </html>
