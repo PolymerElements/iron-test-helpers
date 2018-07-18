@@ -14,7 +14,7 @@ See: [Documentation](https://www.webcomponents.org/element/@polymer/iron-test-he
 
 ### Mock Interactions
 
-This is a set of methods to simulate mouse or keyboard interaction with an element. Include `mock-interactions.js` and then use them like so:
+This is a set of methods to simulate mouse or keyboard interaction with an element. Import `mock-interactions.js` and then use them like so:
 
 ```javascript
 test('can be triggered with space', function(done) {
