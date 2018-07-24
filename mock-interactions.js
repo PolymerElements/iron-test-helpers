@@ -1,26 +1,18 @@
 /**
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at
-http://polymer.github.io/LICENSE.txt The complete set of authors may be found at
-http://polymer.github.io/AUTHORS.txt The complete set of contributors may be
-found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by Google as
-part of the polymer project is also subject to an additional IP rights grant
-found at http://polymer.github.io/PATENTS.txt
-*/
+ * @license
+ * Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+ * This code may only be used under the BSD style license found at
+ * http://polymer.github.io/LICENSE.txt The complete set of authors may be found
+ * at http://polymer.github.io/AUTHORS.txt The complete set of contributors may
+ * be found at http://polymer.github.io/CONTRIBUTORS.txt Code distributed by
+ * Google as part of the polymer project is also subject to an additional IP
+ * rights grant found at http://polymer.github.io/PATENTS.txt
+ */
+
 import {Base} from '@polymer/polymer/polymer-legacy.js';
 
-// We declare it as a namespace to be compatible with JSCompiler.
-/** @const */ var MockInteractions = {};
-
-(function(scope, global) {
-'use strict';
-
-// In case the var above was not global, or if it was renamed.
-global.MockInteractions = scope;
-
-var HAS_NEW_MOUSE = (function() {
-  var has = false;
+const HAS_NEW_MOUSE = (() => {
+  let has = false;
   try {
     has = Boolean(new MouseEvent('x'));
   } catch (_) {
@@ -28,8 +20,8 @@ var HAS_NEW_MOUSE = (function() {
   return has;
 })();
 
-var HAS_NEW_TOUCH = (function() {
-  var has = false;
+const HAS_NEW_TOUCH = (() => {
+  let has = false;
   try {
     has = Boolean(new TouchEvent('x'));
   } catch (_) {
@@ -42,8 +34,8 @@ var HAS_NEW_TOUCH = (function() {
  *
  * @param {!Element} node An element.
  */
-function middleOfNode(node) {
-  var bcr = node.getBoundingClientRect();
+export function middleOfNode(node) {
+  const bcr = node.getBoundingClientRect();
   return {y: bcr.top + (bcr.height / 2), x: bcr.left + (bcr.width / 2)};
 }
 
@@ -52,8 +44,8 @@ function middleOfNode(node) {
  *
  * @param {!Element} node An element.
  */
-function topLeftOfNode(node) {
-  var bcr = node.getBoundingClientRect();
+export function topLeftOfNode(node) {
+  const bcr = node.getBoundingClientRect();
   return {y: bcr.top, x: bcr.left};
 }
 
@@ -62,11 +54,12 @@ function topLeftOfNode(node) {
  * and a target node. The Touch instances will each have a unique Touch
  * identifier.
  *
- * @param {!Array<{ x: number, y: number }>} xyList A list of (x,y) coordinate objects.
+ * @param {!Array<{ x: number, y: number }>} xyList A list of (x,y) coordinate
+ * objects.
  * @param {!Element} node A target element node.
  */
-function makeTouches(xyList, node) {
-  var id = 0;
+export function makeTouches(xyList, node) {
+  let id = 0;
 
   return xyList.map(function(xy) {
     var touchInit =
@@ -86,15 +79,15 @@ function makeTouches(xyList, node) {
  * @param {!Element} node The target element node for the generated
  * TouchEvent to be dispatched on.
  */
-function makeSoloTouchEvent(type, xy, node) {
+export function makeSoloTouchEvent(type, xy, node) {
   xy = xy || middleOfNode(node);
-  var touches = makeTouches([xy], node);
-  var touchEventInit = {
+  const touches = makeTouches([xy], node);
+  const touchEventInit = {
     touches: touches,
     targetTouches: touches,
     changedTouches: touches
   };
-  var event;
+  let event;
 
   if (HAS_NEW_TOUCH) {
     touchEventInit.bubbles = true;
@@ -107,7 +100,7 @@ function makeSoloTouchEvent(type, xy, node) {
       // Allow event to go outside a ShadowRoot.
       composed: true
     });
-    for (var property in touchEventInit) {
+    for (const property in touchEventInit) {
       event[property] = touchEventInit[property];
     }
   }
@@ -120,11 +113,12 @@ function makeSoloTouchEvent(type, xy, node) {
  * This event bubbles and is cancellable.
  *
  * @param {string} type The type of mouse event (such as 'tap' or 'down').
- * @param {{ x: number, y: number }} xy The (x,y) coordinates the mouse event should be fired from.
+ * @param {{ x: number, y: number }} xy The (x,y) coordinates the mouse event
+ * should be fired from.
  * @param {!Element} node The node to fire the event on.
  */
-function makeMouseEvent(type, xy, node) {
-  var props = {
+export function makeMouseEvent(type, xy, node) {
+  const props = {
     bubbles: true,
     cancelable: true,
     clientX: xy.x,
@@ -135,7 +129,7 @@ function makeMouseEvent(type, xy, node) {
     buttons:
         1  // http://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
   };
-  var e;
+  let e;
   if (HAS_NEW_MOUSE) {
     e = new MouseEvent(type, props);
   } else {
@@ -170,7 +164,7 @@ function makeMouseEvent(type, xy, node) {
  * @param {?number=} steps Optional. The numbers of steps in the move motion.
  *    If not specified, the default is 5.
  */
-function move(node, fromXY, toXY, steps) {
+export function move(node, fromXY, toXY, steps) {
   steps = steps || 5;
   var dx = Math.round((fromXY.x - toXY.x) / steps);
   var dy = Math.round((fromXY.y - toXY.y) / steps);
@@ -190,10 +184,10 @@ function move(node, fromXY, toXY, steps) {
  * @param {!Element} target The node to fire the event on.
  * @param {?number} dx The horizontal displacement.
  * @param {?number} dy The vertical displacement
- * @param {?number=} steps Optional. The numbers of steps in the dragging motion.
- *    If not specified, the default is 5.
+ * @param {?number=} steps Optional. The numbers of steps in the dragging
+ * motion. If not specified, the default is 5.
  */
-function track(target, dx, dy, steps) {
+export function track(target, dx, dy, steps) {
   dx = dx | 0;
   dy = dy | 0;
   steps = steps || 5;
@@ -210,9 +204,10 @@ function track(target, dx, dy, steps) {
  * not specified, the middle of the node will be used instead.
  *
  * @param {!Element} node The node to fire the event on.
- * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
+ * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the
+ * mouse event should be fired from.
  */
-function down(node, xy) {
+export function down(node, xy) {
   xy = xy || middleOfNode(node);
   makeMouseEvent('mousedown', xy, node);
 }
@@ -223,9 +218,10 @@ function down(node, xy) {
  * not specified, the middle of the node will be used instead.
  *
  * @param {!Element} node The node to fire the event on.
- * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should be fired from.
+ * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the
+ * mouse event should be fired from.
  */
-function up(node, xy) {
+export function up(node, xy) {
   xy = xy || middleOfNode(node);
   makeMouseEvent('mouseup', xy, node);
 }
@@ -233,10 +229,10 @@ function up(node, xy) {
 /**
  * Generate a click event on a given node, optionally at a given coordinate.
  * @param {!Element} node The node to fire the click event on.
- * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the mouse event should
- * be fired from.
+ * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the
+ * mouse event should be fired from.
  */
-function click(node, xy) {
+export function click(node, xy) {
   xy = xy || middleOfNode(node);
   makeMouseEvent('click', xy, node);
 }
@@ -245,22 +241,21 @@ function click(node, xy) {
  * Generate a touchstart event on a given node, optionally at a given
  * coordinate.
  * @param {!Element} node The node to fire the click event on.
- * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the touch event should
- * be fired from.
+ * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the
+ * touch event should be fired from.
  */
-function touchstart(node, xy) {
+export function touchstart(node, xy) {
   xy = xy || middleOfNode(node);
   makeSoloTouchEvent('touchstart', xy, node);
 }
 
-
 /**
  * Generate a touchend event on a given node, optionally at a given coordinate.
  * @param {!Element} node The node to fire the click event on.
- * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the touch event should
- * be fired from.
+ * @param {{ x: number, y: number }=} xy Optional. The (x,y) coordinates the
+ * touch event should be fired from.
  */
-function touchend(node, xy) {
+export function touchend(node, xy) {
   xy = xy || middleOfNode(node);
   makeSoloTouchEvent('touchend', xy, node);
 }
@@ -271,12 +266,13 @@ function touchend(node, xy) {
  *`callback` after the `tap` event is fired.
  *
  * @param {!Element} target The node to fire the event on.
- * @param {?Function=} callback Optional. The function to be called after the action ends.
+ * @param {?Function=} callback Optional. The function to be called after the
+ *action ends.
  * @param {?{
  *   emulateTouch: boolean
  * }=} options Optional. Configure the emulation fidelity of the mouse events.
  */
-function downAndUp(target, callback, options) {
+export function downAndUp(target, callback, options) {
   if (options && options.emulateTouch) {
     touchstart(target);
     touchend(target);
@@ -299,12 +295,13 @@ function downAndUp(target, callback, options) {
  *   emulateTouch: boolean
  * }=} options Optional. Configure the emulation fidelity of the mouse event.
  */
-function tap(node, options) {
+export function tap(node, options) {
   // Respect nodes that are disabled in the UI.
-  if (window.getComputedStyle(node)['pointer-events'] === 'none')
+  if (window.getComputedStyle(node)['pointer-events'] === 'none') {
     return;
+  }
 
-  var xy = middleOfNode(node);
+  const xy = middleOfNode(node);
 
   if (options && options.emulateTouch) {
     touchstart(node, xy);
@@ -321,7 +318,7 @@ function tap(node, options) {
  *
  * @param {!Element} target The node to fire the event on.
  */
-function focus(target) {
+export function focus(target) {
   Base.fire('focus', {}, {bubbles: false, node: target});
 }
 
@@ -330,21 +327,22 @@ function focus(target) {
  *
  * @param {!Element} target The node to fire the event on.
  */
-function blur(target) {
+export function blur(target) {
   Base.fire('blur', {}, {bubbles: false, node: target});
 }
 
 /**
  * Returns a keyboard event. This event bubbles and is cancellable.
  *
- * @param {string} type The type of keyboard event (such as 'keyup' or 'keydown').
+ * @param {string} type The type of keyboard event (such as 'keyup' or
+ * 'keydown').
  * @param {number} keyCode The keyCode for the event.
  * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
  *     Accepted values are shift, ctrl, alt, meta.
  * @param {string=} key The KeyboardEvent.key value for the event.
  */
-function keyboardEventFor(type, keyCode, modifiers, key) {
-  var event = new CustomEvent(type, {
+export function keyboardEventFor(type, keyCode, modifiers, key) {
+  const event = new CustomEvent(type, {
     detail: 0,
     bubbles: true,
     cancelable: true,
@@ -374,13 +372,14 @@ function keyboardEventFor(type, keyCode, modifiers, key) {
  * cancellable.
  *
  * @param {!Element} target The node to fire the event on.
- * @param {string} type The type of keyboard event (such as 'keyup' or 'keydown').
+ * @param {string} type The type of keyboard event (such as 'keyup' or
+ * 'keydown').
  * @param {number} keyCode The keyCode for the event.
  * @param {(string|Array<string>)=} modifiers The key modifiers for the event.
  *     Accepted values are shift, ctrl, alt, meta.
  * @param {string=} key The KeyboardEvent.key value for the event.
  */
-function keyEventOn(target, type, keyCode, modifiers, key) {
+export function keyEventOn(target, type, keyCode, modifiers, key) {
   target.dispatchEvent(keyboardEventFor(type, keyCode, modifiers, key));
 }
 
@@ -394,7 +393,7 @@ function keyEventOn(target, type, keyCode, modifiers, key) {
  *     Accepted values are shift, ctrl, alt, meta.
  * @param {string=} key The KeyboardEvent.key value for the event.
  */
-function keyDownOn(target, keyCode, modifiers, key) {
+export function keyDownOn(target, keyCode, modifiers, key) {
   keyEventOn(target, 'keydown', keyCode, modifiers, key);
 }
 
@@ -408,7 +407,7 @@ function keyDownOn(target, keyCode, modifiers, key) {
  *     Accepted values are shift, ctrl, alt, meta.
  * @param {string=} key The KeyboardEvent.key value for the event.
  */
-function keyUpOn(target, keyCode, modifiers, key) {
+export function keyUpOn(target, keyCode, modifiers, key) {
   keyEventOn(target, 'keyup', keyCode, modifiers, key);
 }
 
@@ -422,7 +421,7 @@ function keyUpOn(target, keyCode, modifiers, key) {
  *     Accepted values are shift, ctrl, alt, meta.
  * @param {string=} key The KeyboardEvent.key value for the event.
  */
-function pressAndReleaseKeyOn(target, keyCode, modifiers, key) {
+export function pressAndReleaseKeyOn(target, keyCode, modifiers, key) {
   keyDownOn(target, keyCode, modifiers, key);
   Base.async(function() {
     keyUpOn(target, keyCode, modifiers, key);
@@ -435,7 +434,7 @@ function pressAndReleaseKeyOn(target, keyCode, modifiers, key) {
  *
  * @param {!Element} target The node to fire the event on.
  */
-function pressEnter(target) {
+export function pressEnter(target) {
   pressAndReleaseKeyOn(target, 13);
 }
 
@@ -445,28 +444,37 @@ function pressEnter(target) {
  *
  * @param {!Element} target The node to fire the event on.
  */
-function pressSpace(target) {
+export function pressSpace(target) {
   pressAndReleaseKeyOn(target, 32);
 }
 
-scope.focus = focus;
-scope.blur = blur;
-scope.down = down;
-scope.up = up;
-scope.downAndUp = downAndUp;
-scope.tap = tap;
-scope.move = move;
-scope.touchstart = touchstart;
-scope.touchend = touchend;
-scope.makeSoloTouchEvent = makeSoloTouchEvent;
-scope.track = track;
-scope.pressAndReleaseKeyOn = pressAndReleaseKeyOn;
-scope.pressEnter = pressEnter;
-scope.pressSpace = pressSpace;
-scope.keyDownOn = keyDownOn;
-scope.keyUpOn = keyUpOn;
-scope.keyboardEventFor = keyboardEventFor;
-scope.keyEventOn = keyEventOn;
-scope.middleOfNode = middleOfNode;
-scope.topLeftOfNode = topLeftOfNode;
-})(MockInteractions, window);
+/**
+ * This global is provided for backwards compatibility and will be removed in
+ * the next major version. All users should migrate to importing functions
+ * directly from this module instead of accessing them via the global.
+ */
+window.MockInteractions = {
+  middleOfNode,
+  topLeftOfNode,
+  makeTouches,
+  makeSoloTouchEvent,
+  makeMouseEvent,
+  move,
+  track,
+  down,
+  up,
+  click,
+  touchstart,
+  touchend,
+  downAndUp,
+  tap,
+  focus,
+  blur,
+  keyboardEventFor,
+  keyEventOn,
+  keyDownOn,
+  keyUpOn,
+  pressAndReleaseKeyOn,
+  pressEnter,
+  pressSpace,
+};

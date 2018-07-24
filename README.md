@@ -14,23 +14,34 @@ See: [Documentation](https://www.webcomponents.org/element/@polymer/iron-test-he
 
 ### Mock Interactions
 
-This is a set of methods to simulate mouse or keyboard interaction with an element. Import `mock-interactions.js` and then use them like so:
+This is a set of methods to simulate mouse or keyboard interaction with an
+element.
 
 ```javascript
+import {pressSpace, tap} from '@polymer/iron-test-helpers/mock-interactions.js';
+
 test('can be triggered with space', function(done) {
   button.addEventListener('keydown', function() {
     done();
   });
-  MockInteractions.pressSpace(button);
+  pressSpace(button);
 });
 
 test('can be clicked', function(done) {
   button.addEventListener('click', function() {
     done();
   });
-  MockInteractions.tap(button);
+  tap(button);
 });
 ```
+
+### Note on globals
+
+Note that in version 3.x, importing `mock-interactions.js` and `test-helpers.js`
+will also set the `window.MockInteractions` and `window.TestHelpers` globals,
+respectively (and importing `iron-test-helpers.js` will set both). This is done
+only for backwards compatibility, and will be removed in the next major version.
+All users should migrate away from globals and onto direct ES module imports.
 
 ## Contributing
 If you want to send a PR to this element, here are
@@ -42,12 +53,6 @@ git clone https://github.com/PolymerElements/iron-test-helpers
 cd iron-test-helpers
 npm install
 npm install -g polymer-cli
-```
-
-### Running the demo locally
-```sh
-polymer serve --npm
-open http://127.0.0.1:<port>/demo/
 ```
 
 ### Running the tests

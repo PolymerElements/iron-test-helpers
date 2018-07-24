@@ -27,12 +27,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script type="module">
     import './test-button.js';
-    import '../mock-interactions.js';
 
     import * as gestures from '@polymer/polymer/lib/utils/gestures.js';
     import {resetMouseCanceller} from '@polymer/polymer/lib/utils/gestures.js';
     import {useShadow} from '@polymer/polymer/lib/utils/settings.js';
     import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+
+    import * as MockInteractions from '../mock-interactions.js';
 
     suite('MockInteractions', function() {
       var button;
@@ -67,8 +68,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suite('class registration', function() {
         test('registers to window', function() {
-          expect(MockInteractions).to.exist;
-          expect(MockInteractions.tap).to.exist;
+          expect(window.MockInteractions).to.exist;
+          expect(window.MockInteractions.tap).to.exist;
         });
       });
 
