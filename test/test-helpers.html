@@ -20,13 +20,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body>
 
   <script type="module">
-    import '../test-helpers.js';
+    import * as TestHelpers from '../test-helpers.js';
     suite('TestHelpers', function() {
       suite('class registration', function() {
         test('registers to window', function() {
-          expect(TestHelpers).to.exist;
-          expect(TestHelpers.forceXIfStamp).to.exist;
-          expect(forceXIfStamp).to.exist;
+          expect(window.TestHelpers).to.exist;
+          expect(window.TestHelpers.forceXIfStamp)
+              .to.equal(TestHelpers.forceXIfStamp);
+          expect(window.forceXIfStamp).to.equal(TestHelpers.forceXIfStamp);
         });
       });
     });
