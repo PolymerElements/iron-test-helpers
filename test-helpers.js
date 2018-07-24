@@ -21,7 +21,7 @@ export function flushAsynchronousOperations() {
   flush();
   // force lifecycle callback to fire on polyfill
   window.CustomElements && window.CustomElements.takeRecords();
-};
+}
 
 /**
  * Stamps and renders a `dom-if` template.
@@ -35,7 +35,7 @@ export function forceXIfStamp(node) {
   }
 
   flushAsynchronousOperations();
-};
+}
 
 /**
  * Fires a custom event on a specific node. This event bubbles and is
@@ -51,7 +51,7 @@ export function fireEvent(type, props, node) {
     event[p] = props[p];
   }
   node.dispatchEvent(event);
-};
+}
 
 /**
  * Skips a test unless a condition is met. Sample use:
@@ -82,7 +82,7 @@ export function skipUnless(condition, test) {
 
     return result;
   };
-};
+}
 
 /**
  * The globals below are provided for backwards compatibility and will be
