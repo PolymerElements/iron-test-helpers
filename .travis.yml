@@ -6,19 +6,23 @@ before_script:
   - >-
     npm run format && git diff --exit-code || (echo -e '\n\033[31mERROR:\033[0m
     Project is not formatted. Please run "npm run format".' && false)
+  - npm run generate-types
 env:
   global:
-    - secure: LDyiv+9/sfliJHFNn8D/bM4POoTYW7bEVxSP2ClbFRtCJ0pnwUdoX0Soi3J3P7XWmhseoWr2Gvw2/iwivzkBCHsw7JWLeemJQWmg/dqvR8VCrC1UyuwFdDJg7QpBgNGug/bokWqvH2vue8SArwSK4cWbM3q096n7UaR2t9WT7IE=
-    - secure: D79q2UXdRtrDE1Tr7TIer1cdcD760ljCl451jhrZ7wvg1qeRiS5zRY2AZyeL1CnsKv3mjwEGx6kSVOt8xhU6rvrgk8UNTowad5uOGJUN83AqCTW6rsfssav++WLXrUhIQ4bxkcmjG2X/eBX3VN+XU6Oz+jli+4oLalhDakbz65o=
-node_js: 'node'
+    - secure: >-
+        LDyiv+9/sfliJHFNn8D/bM4POoTYW7bEVxSP2ClbFRtCJ0pnwUdoX0Soi3J3P7XWmhseoWr2Gvw2/iwivzkBCHsw7JWLeemJQWmg/dqvR8VCrC1UyuwFdDJg7QpBgNGug/bokWqvH2vue8SArwSK4cWbM3q096n7UaR2t9WT7IE=
+    - secure: >-
+        D79q2UXdRtrDE1Tr7TIer1cdcD760ljCl451jhrZ7wvg1qeRiS5zRY2AZyeL1CnsKv3mjwEGx6kSVOt8xhU6rvrgk8UNTowad5uOGJUN83AqCTW6rsfssav++WLXrUhIQ4bxkcmjG2X/eBX3VN+XU6Oz+jli+4oLalhDakbz65o=
+node_js: node
 addons:
   firefox: latest
   chrome: stable
 script:
   - xvfb-run polymer test --module-resolution=node --npm
-  - 'if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then polymer test --module-resolution=node --npm -s ''default''; fi'
+  - >-
+    if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then polymer test
+    --module-resolution=node --npm -s 'default'; fi
 dist: trusty
 cache:
   directories:
     - node_modules
-
