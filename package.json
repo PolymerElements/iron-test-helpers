@@ -15,7 +15,7 @@
   "version": "3.0.0-pre.22",
   "scripts": {
     "format": "webmat",
-    "generate-types": "gen-typescript-declarations --deleteExisting --outDir .",
+    "generate-types": "gen-typescript-declarations --deleteExisting --outDir . --verify",
     "prepack": "npm run generate-types"
   },
   "main": "iron-test-helpers.js",
