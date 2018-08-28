@@ -28,6 +28,6 @@
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "wct-browser-legacy": "^1.0.1",
     "webmat": "^0.2.2",
-    "@polymer/gen-typescript-declarations": "^1.5.0"
+    "@polymer/gen-typescript-declarations": "^1.5.1"
   }
 }
