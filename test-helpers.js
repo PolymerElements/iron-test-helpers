@@ -62,9 +62,10 @@ export function fireEvent(type, props, node) {
  *      ...
  *    });
  *
- * @param {Function} condition The name of a Boolean function determining if the
- * test should be run.
+ * @param {Function} condition A Boolean function determining if the test should
+ * be run.
  * @param {Function} test The test to be run.
+ * @return {Function}
  */
 export function skipUnless(condition, test) {
   const isAsyncTest = !!test.length;
