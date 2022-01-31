@@ -164,8 +164,8 @@ export function makeMouseEvent(type, xy, node) {
  * specific node, between a set of coordinates.
  *
  * @param {!Element} node The node to fire the event on.
- * @param {Object} fromXY The (x,y) coordinates the dragging should start from.
- * @param {Object} toXY The (x,y) coordinates the dragging should end at.
+ * @param {!Object} fromXY The (x,y) coordinates the dragging should start from.
+ * @param {!Object} toXY The (x,y) coordinates the dragging should end at.
  * @param {?number=} steps Optional. The numbers of steps in the move motion.
  *    If not specified, the default is 5.
  * @return {undefined}
